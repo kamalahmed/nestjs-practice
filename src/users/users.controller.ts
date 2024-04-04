@@ -6,14 +6,15 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
   // create REST routes for users.
   @Get() // GET /users
-  findAll(): [] {
-    return [];
+  findAll(@Query('role') role?: 'admin' | 'subscriber'): object {
+    return [role];
   }
 
   @Get(':id') // GET /users/123
