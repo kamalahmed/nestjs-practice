@@ -8,29 +8,37 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-
+import { UsersService } from './users.service';
+interface User {
+  id?: number;
+  name: string;
+  email: string;
+  role: 'admin' | 'subscriber';
+}
 @Controller('users')
 export class UsersController {
+  constructor(private readonly usersService: UsersService) {}
   // create REST routes for users.
   @Get() // GET /users
   findAll(@Query('role') role?: 'admin' | 'subscriber'): object {
-    return [role];
+    return this.usersService.findAll(role);
   }
-
-  @Get(':id') // GET /users/123
-  findOne(@Param('id') id: string): object {
-    return { id };
+  @Get(':id')
+  findOne(@Param('id') id: number): User {
+    // here id is always passed as string from the url parameter. Using number type does not convert to number.
+    return this.usersService.findOne(+id);
   }
   @Post() // POST /users
-  create(@Body() user: object): object {
-    return user;
+  create(@Body() user: User): User {
+    return this.usersService.create(user);
   }
   @Patch(':id') // PATCH /users/123
-  update(@Param('id') id: string, @Body() user: object): object {
-    return { id, ...user };
+  update(@Param('id') id: number, @Body() user: User): User {
+    // id is always passed as string from the url parameter. Using number type does not convert to number.
+    return this.usersService.update(+id, user);
   }
   @Delete(':id') // DELETE /users/123
-  remove(@Param('id') id: string): object {
-    return { id };
+  delete(@Param('id') id: number): User {
+    return this.usersService.delete(+id);
   }
 }
