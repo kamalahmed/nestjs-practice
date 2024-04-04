@@ -79,7 +79,7 @@ export class UsersService {
     return newUser;
   }
   update(id: number, user: User) {
-    const foundUser = this._users.find((user) => user.id === +id);
+    const foundUser = this._users.find((user) => user.id === id);
     if (foundUser) {
       foundUser.name = user.name;
       foundUser.email = user.email;
@@ -88,7 +88,7 @@ export class UsersService {
     return foundUser;
   }
   delete(id: number): User {
-    const foundUser = this._users.find((user) => user.id === +id);
+    const foundUser = this._users.find((user) => user.id === id);
     if (foundUser) {
       this._users = this._users.filter((user) => user.id !== id);
     }
