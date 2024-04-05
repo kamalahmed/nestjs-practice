@@ -5,11 +5,14 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  ValidationPipe,
   Patch,
   Post,
   Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 interface User {
   id?: number;
   name: string;
@@ -30,16 +33,19 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
   @Post() // POST /users
-  create(@Body() user: User): User {
-    return this.usersService.create(user);
+  create(@Body(ValidationPipe) createUserDto: CreateUserDto): User {
+    return this.usersService.create(createUserDto);
   }
   @Patch(':id') // PATCH /users/123
-  update(@Param('id', ParseIntPipe) id: number, @Body() user: User): User {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body(ValidationPipe) updateUserDto: UpdateUserDto,
+  ): User {
     // id is always passed as string from the url parameter. Using number type does not convert to number.
-    return this.usersService.update(id, user);
+    return this.usersService.update(id, updateUserDto);
   }
   @Delete(':id') // DELETE /users/123
-  delete(@Param('id', ParseIntPipe) id: number): User {
-    return this.usersService.delete(id);
+  remove(@Param('id', ParseIntPipe) id: number): User {
+    return this.usersService.remove(id);
   }
 }
