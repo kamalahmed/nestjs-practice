@@ -21,7 +21,7 @@ export class EmployeesController {
   }
 
   @Get()
-  findAll(@Query('role') role?: "ADMIN" | "SUBSCRIBER") {
+  findAll(@Query('role') role?: 'ADMIN' | 'SUBSCRIBER') {
     return this.employeesService.findAll(role);
   }
 
